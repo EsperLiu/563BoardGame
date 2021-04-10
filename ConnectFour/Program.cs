@@ -1,10 +1,11 @@
 ﻿using System;
+using BoardGameFramework;
 
-namespace BoardGameDesign
+namespace ConnectFour
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("**********************************************");
             Console.WriteLine("*                                            *");
@@ -15,10 +16,7 @@ namespace BoardGameDesign
             Console.WriteLine();
             Game game = new Connect4Game("Connect-4");
             game.Configure();
-            while (true)
-            {
-                game.Play();
-            }
+            while (true) game.Play();
         }
     }
 }

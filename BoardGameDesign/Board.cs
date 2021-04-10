@@ -1,51 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace BoardGameDesign
+namespace BoardGameFramework
 {
-
-    public class  Board
+    public abstract class Board
     {
-        public int Length { get; set; }
-        public int Width { get; set; }
-        public Square[,] Squares { get; set; }
-
-        public Board(int width, int length)
+        protected Board(int width, int length)
         {
             Width = width;
             Length = length;
             Squares = new Square[Width, Length];
 
-            for (int x = 0; x < Width; x++)
-            {
-                for (int y = 0; y < Length; y++)
-                {
-                    Squares[x, y] = (new Square(x, y));
-                }
-            }
+            for (var x = 0; x < Width; x++)
+            for (var y = 0; y < Length; y++)
+                Squares[x, y] = new Square(x, y);
         }
 
-        public void Render()
-        {
-            Console.WriteLine("     [C1][C2][C3][C4][C5][C6][C7]");
-            Console.WriteLine("---------------------------------");
-            for (int y = 0; y < Length; y++)
-            {
-                Console.Write("[R"+(y+1).ToString()+"]|");
-                for (int x = 0; x < Width; x++)
-                {
-                    Console.Write(Squares[x, y].Render());
-                }
+        public int Length { get; set; }
+        public int Width { get; set; }
+        public Square[,] Squares { get; set; }
 
-                Console.Write("\n");
-            }
-            Console.WriteLine("---------------------------------");
-        }
+        public abstract void Render();
 
         public Square[,] PositionSnapshot()
         {
-             return Squares.Clone() as Square[,];
+            return Squares.Clone() as Square[,];
         }
     }
 }

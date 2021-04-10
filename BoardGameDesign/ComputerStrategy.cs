@@ -1,34 +1,9 @@
-﻿using System;
-using System.Dynamic;
-
-namespace BoardGameDesign
+﻿namespace BoardGameFramework
 {
     public abstract class ComputerStrategy
     {
-        protected string Mode { get; set; }
+        protected string Name { get; set; }
 
-        protected abstract string GenerateMove();
+        public abstract Move GenerateMove(Board board, Player player);
     }
-
-    public class C4ComputerStrategy : ComputerStrategy
-    {
-
-        public C4ComputerStrategy(string mode)
-        {
-            Mode = mode;
-        }
-
-        protected override string GenerateMove()
-        {
-            if (Mode == "RANDOM")
-            {
-                Random rand = new Random();
-                return rand.Next(0, 6).ToString();
-            }
-
-            return "0";
-        }
-    }
-
-
 }

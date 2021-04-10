@@ -1,23 +1,15 @@
-﻿namespace BoardGameDesign
+﻿namespace BoardGameFramework
 {
     public abstract class Piece
     {
-        public char Token;
         public Player Owner;
+        public char Token;
+        public string Color;
 
         protected Piece(Player owner, char token)
         {
             Owner = owner;
             Token = token;
-        }
-    }
-
-    public class ConnectFourPiece:Piece
-    {
-        public Square Location;
-        public ConnectFourPiece(Player owner, char token, Square square) : base(owner, token)
-        {
-            Location = square;
         }
     }
 }

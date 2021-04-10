@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lazarus\\OneDrive - Queensland University of Technology\\IFN563 Object Oriented Design\\Project\\BoardGameDesign\\BoardGameDesign\\BoardGameDesign.csproj",
-      "projectName": "BoardGameDesign",
-      "projectPath": "C:\\Users\\Lazarus\\OneDrive - Queensland University of Technology\\IFN563 Object Oriented Design\\Project\\BoardGameDesign\\BoardGameDesign\\BoardGameDesign.csproj",
+      "projectUniqueName": "C:\\Users\\Lazarus\\OneDrive - Queensland University of Technology\\IFN563 Object Oriented Design\\Project\\BoardGameDesign\\BoardGameDesign\\BoardGameFramework.csproj",
+      "projectName": "BoardGameFramework",
+      "projectPath": "C:\\Users\\Lazarus\\OneDrive - Queensland University of Technology\\IFN563 Object Oriented Design\\Project\\BoardGameDesign\\BoardGameDesign\\BoardGameFramework.csproj",
       "packagesPath": "C:\\Users\\Lazarus\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Lazarus\\OneDrive - Queensland University of Technology\\IFN563 Object Oriented Design\\Project\\BoardGameDesign\\BoardGameDesign\\obj\\",
       "projectStyle": "PackageReference",
