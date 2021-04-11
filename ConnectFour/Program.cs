@@ -14,7 +14,7 @@ namespace ConnectFour
             Console.WriteLine("*                                            *");
             Console.WriteLine("**********************************************");
             Console.WriteLine();
-            Game game = new Connect4Game("Connect-4");
+            Game game = new Connect4Game();
             game.Configure();
             while (true) game.Play();
         }

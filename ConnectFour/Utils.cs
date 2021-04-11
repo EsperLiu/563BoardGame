@@ -68,8 +68,9 @@ namespace ConnectFour
             if (s.StartsWith("$"))
             {
                 // handle command here.
+                return "";
             }
-            return "";
+            return s;
         }
     }
 }

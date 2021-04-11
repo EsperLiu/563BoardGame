@@ -29,6 +29,22 @@ namespace ConnectFour
             }
         }
 
+        public override bool ExecuteMove(Move move, Player player)
+        {
+            var targetColumn = (move as ConnectFourMove).TargetColumn;
+            for (var y = Length - 1; y >= 0; y--)
+            {
+                if (Squares[targetColumn, y].Occupant == null)
+                {
+                    Squares[targetColumn, y].Occupant =
+                        new ConnectFourPiece(player,
+                            (player as ConnectFourPlayer).Token, Squares[targetColumn, y]);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public override void Render()
         {
             Console.WriteLine("     [C1][C2][C3][C4][C5][C6][C7]");
@@ -40,8 +56,8 @@ namespace ConnectFour
 
                 Console.Write("\n");
             }
-
             Console.WriteLine("---------------------------------");
+            
         }
 
         public int[,] MatrixFormat()
@@ -81,5 +97,6 @@ namespace ConnectFour
                 Console.Write("\n");
             }
         }
+
     }
 }

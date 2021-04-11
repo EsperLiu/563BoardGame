@@ -19,11 +19,7 @@ namespace BoardGameFramework
         public int Width { get; set; }
         public Square[,] Squares { get; set; }
 
+        public abstract bool ExecuteMove(Move move, Player player);
         public abstract void Render();
-
-        public Square[,] PositionSnapshot()
-        {
-            return Squares.Clone() as Square[,];
-        }
     }
 }

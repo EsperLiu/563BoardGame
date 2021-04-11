@@ -22,7 +22,7 @@ namespace ConnectFour
             {
                 Console.WriteLine($"{this} to make a move. Legal moves are: Columns " 
                                   + string.Join(", ", oc.ToArray()));
-                input = Console.ReadLine();
+                input = Utils.TakeStringInput(true);
                 if (input.StartsWith("$"))
                 {
                     CommandHandler.HandleCommand(input);

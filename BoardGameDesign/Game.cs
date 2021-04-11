@@ -5,20 +5,19 @@ namespace BoardGameFramework
 {
     public abstract class Game
     {
-        protected Game(string gameName)
+        protected Game()
         {
-            GameName = gameName;
             RoundCount = 1;
             Players = new List<Player>(
             );
         }
 
-        public string GameName { get; set; }
         public bool Finished { get; set; }
         public Board GameBoard { get; set; }
         public List<Player> Players { get; set; }
         public Player ActivePlayer { get; set; }
         public Scoreboard GameScoreboard { get; set; }
+        public MoveHistory GameMoveHistory { get; set; }
 
 
         protected int RoundCount { get; set; }
@@ -32,7 +31,10 @@ namespace BoardGameFramework
             while (!Finished)
             {
                 Move move = ActivePlayer.MakeMove(GameBoard);
-                ExecuteMove(move);
+                if (GameBoard.ExecuteMove(move, ActivePlayer))
+                {
+                    GameMoveHistory.AppendMove(move);
+                }
                 GameBoard.Render();
 
                 if (CheckVictory())
@@ -67,9 +69,10 @@ namespace BoardGameFramework
         protected abstract void InitializeRound();
         protected abstract bool CheckVictory();
         protected abstract bool CheckDraw();
-        protected abstract bool ExecuteMove(Move move);
+        // protected abstract bool ExecuteMove(Move move);
         protected abstract void HandleVictory();
         protected abstract void HandleDraw();
         protected abstract void HandleContinue();
+        protected abstract void ContinueFromMove(int moveNumber);
     }
 }

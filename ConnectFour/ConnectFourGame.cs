@@ -7,13 +7,14 @@ namespace ConnectFour
     public class Connect4Game : Game
     {
         
-        public Connect4Game(string gameName) : base(gameName)
+        public Connect4Game() : base()
         {
         }
 
         protected override void InitializeRound()
         {
             GameBoard = new ConnectFourBoard(7, 6);
+            GameMoveHistory = new ConnectFourMoveHistory();
             Console.WriteLine($"========={Players[0]} vs. {Players[1]}:  Round #{RoundCount}=========");
             Console.WriteLine();
             MoveCount = 0;
@@ -90,21 +91,21 @@ namespace ConnectFour
             Console.WriteLine();
         }
 
-        protected override bool ExecuteMove(Move move)
-        {
-            var targetColumn = (move as ConnectFourMove).TargetColumn;
-            for (var y = GameBoard.Length - 1; y >= 0; y--)
-            {
-                if (GameBoard.Squares[targetColumn, y].Occupant == null)
-                {
-                    GameBoard.Squares[targetColumn, y].Occupant =
-                        new ConnectFourPiece(ActivePlayer, 
-                            (ActivePlayer as ConnectFourPlayer).Token, GameBoard.Squares[targetColumn, y]);
-                    return true;
-                }
-            }
-            return false;
-        }
+        //protected override bool ExecuteMove(Move move)
+        //{
+        //    var targetColumn = (move as ConnectFourMove).TargetColumn;
+        //    for (var y = GameBoard.Length - 1; y >= 0; y--)
+        //    {
+        //        if (GameBoard.Squares[targetColumn, y].Occupant == null)
+        //        {
+        //            GameBoard.Squares[targetColumn, y].Occupant =
+        //                new ConnectFourPiece(ActivePlayer, 
+        //                    (ActivePlayer as ConnectFourPlayer).Token, GameBoard.Squares[targetColumn, y]);
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
         protected override bool CheckVictory()
         {
@@ -157,6 +158,44 @@ namespace ConnectFour
             }
 
             RoundCount++;
+        }
+
+        protected override void ContinueFromMove(int moveNumber)
+        {
+            ConnectFourBoard newBoard = new ConnectFourBoard(7, 6);
+
+            ConnectFourPlayer first = Players[0] as ConnectFourPlayer;
+            ConnectFourPlayer second = Players[1] as ConnectFourPlayer;
+
+            foreach (ConnectFourPlayer player in Players)
+            {
+                if (player.Id == 0)
+                {
+                    first = player;
+                } else if (player.Id == 1)
+                {
+                    second = player;
+                }
+                else
+                {
+                    throw new ApplicationException("Players not set correctly. ");
+                }
+            }
+
+            int moveCount = 0;
+            foreach (ConnectFourMove move in GameMoveHistory.MoveList)
+            {
+                moveCount++;
+                if (moveCount % 2 == 1)
+                {
+                    newBoard.ExecuteMove(move, first);
+                }
+                else
+                {
+                    newBoard.ExecuteMove(move, second);
+                }
+            }
+            newBoard.Render();
         }
 
     }
