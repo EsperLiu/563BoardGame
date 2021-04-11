@@ -1,10 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using BoardGameFramework;
 
 namespace ConnectFour
 {
     public static class Utils
     {
+        public static ConnectFourPlayer GetPlayerById(List<Player> players, int id)
+        {
+            foreach (ConnectFourPlayer player in players)
+            {
+                if (player.Id == id)
+                {
+                    return player;
+                }
+            }
+            return null;
+        }
         public static int FindConnected(int[,] matrix, int id, int dx, int dy)
         {
             int longest = 0;
@@ -64,13 +76,74 @@ namespace ConnectFour
 
         public static string TakeStringInput(bool allowCommand)
         {
-            string s = Console.ReadLine();
-            if (s.StartsWith("$"))
+            string str = Console.ReadLine();
+            string s = str.ToUpper();
+            if (s.StartsWith("/"))
             {
-                // handle command here.
-                return "";
+                if (s == "/" || s == "/HELP")
+                {
+                    Console.WriteLine("Help Doc.");
+                    return null;
+                } 
+
+                else if (s.StartsWith("/TRAVERSE"))
+                {
+                    if (Connect4Game.Instance.GameMoveHistory == null || Connect4Game.Instance.GameMoveHistory.MoveList.Count == 0)
+                    {
+                        Console.WriteLine(">> No move history to traverse. Use this feature once you've made some moves!");
+                        return null;
+                    }
+                    Console.WriteLine("********************************************************************************");
+                    Console.WriteLine("     You are now in traverse mode. ");
+                    Console.WriteLine("     Use /moves to see a list of past moves. ");
+                    Console.WriteLine("     Use /tb and /rp to traverse the move list; ");
+                    Console.WriteLine("     Use /goto + [move #] (i.e. \"/goto 5\") to retrieve a position directly;");
+                    Console.WriteLine("     then use /select to continue from the chosen position.");
+                    Console.WriteLine("     Press [Enter] with no input to exit traverse mode. ");
+                    Console.WriteLine("********************************************************************************");
+                    int current = Connect4Game.Instance.GameMoveHistory.MoveList.Count;
+                    bool quit = false;
+                    while (!quit)
+                    {
+                        string input = Console.ReadLine().ToUpper();
+                        if (input.StartsWith("/TAKEBACK") || input.StartsWith("/TB"))
+                        {
+                            current--;
+                            Connect4Game.Instance.GoToMove(current).Render();
+                        } 
+                        else if (input.StartsWith("/REPLAY") || input.StartsWith("/RP"))
+                        {
+                            current++;
+                            Connect4Game.Instance.GoToMove(current).Render();
+                        }
+                        else if (input.StartsWith("/SELECT"))
+                        {
+                            quit = true;
+                            Connect4Game.Instance.ContinueFromMove(current, Connect4Game.Instance.GoToMove(current));
+                            Connect4Game.Instance.GameBoard.Render();
+                        }
+                        else if (input.StartsWith("/MOVES"))
+                        {
+                            Console.WriteLine(Connect4Game.Instance.GameMoveHistory);
+                        }
+                        else if (input.StartsWith("/GOTO "))
+                        {
+                            if (int.TryParse(input.Substring(6), out current))
+                            {
+                                Connect4Game.Instance.GoToMove(current).Render();
+                            };
+                        }
+                        else if (input == "") 
+                        {
+                            // Re-renders the board and quit.
+                            Connect4Game.Instance.GameBoard.Render();
+                            quit = true;
+                        }
+                    }
+                }
+                return null;
             }
-            return s;
+            return str;
         }
     }
 }

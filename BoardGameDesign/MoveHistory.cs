@@ -12,8 +12,6 @@ namespace BoardGameFramework
             MoveList = new List<Move>();
         }
 
-        public abstract Board ReconstructPosition(int moveNumber);
-
         public void AppendMove(Move move)
         {
             MoveList.Add(move);
@@ -21,14 +19,16 @@ namespace BoardGameFramework
 
         public override string ToString()
         {
-            string s = "";
+            string s = "Move History: \n";
             int moveCount = 0;
             foreach (var move in MoveList)
             {
                 moveCount++;
-                s += $"#{moveCount}: Column {move.Command} \n";
+                s += $"Move #{moveCount}: C{move.Command} \n";
             }
             return s;
         }
+
+        public abstract Board ReconstructBoard(int n); // Re-do all moves up to the nth move, then return new board state.
     }
 }

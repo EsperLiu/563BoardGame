@@ -20,13 +20,17 @@ namespace ConnectFour
             bool legalMove = false;
             while (!legalMove)
             {
-                Console.WriteLine($"{this} to make a move. Legal moves are: Columns " 
-                                  + string.Join(", ", oc.ToArray()));
-                input = Utils.TakeStringInput(true);
-                if (input.StartsWith("$"))
+                // It is possible at runtime that ActivePlayer changes within this loop
+                // This happens when the current ActivePlayer restores the game to a previous position, 
+                // in which he/she is no longer the ActivePlayer. 
+                // In this case, we return null and let the Game logic handle it.
+                if (Connect4Game.Instance.ActivePlayer != this)
                 {
-                    CommandHandler.HandleCommand(input);
-                } else if (int.TryParse(input, out int targetColumn)) {
+                    return null;
+                }
+                Console.WriteLine($"{this} to make a move. ");
+                input = Utils.TakeStringInput(true);
+                if (int.TryParse(input, out int targetColumn)) {
                     foreach (int i in oc)
                     {
                         if (i == targetColumn)

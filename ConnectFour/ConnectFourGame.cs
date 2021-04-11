@@ -6,10 +6,18 @@ namespace ConnectFour
 {
     public class Connect4Game : Game
     {
-        
-        public Connect4Game() : base()
+        private static readonly Connect4Game instance = new Connect4Game();
+        static Connect4Game()
         {
         }
+        private Connect4Game()
+        {
+        }
+        public static Connect4Game Instance
+        {
+            get => instance;
+        }
+
 
         protected override void InitializeRound()
         {
@@ -23,8 +31,12 @@ namespace ConnectFour
         public override void Configure()
         {
             // Create the first player
-            Console.WriteLine("Please enter a name for player 1: ");
-            var playerName = Console.ReadLine();
+            string playerName = null; 
+            while (playerName == null)
+            {
+                Console.WriteLine("Please enter a name for player 1: ");
+                playerName = Utils.TakeStringInput(true);
+            }
             Players.Add(new HumanC4Player(playerName));
 
             // Select game mode (PvC or PvP)
@@ -91,22 +103,6 @@ namespace ConnectFour
             Console.WriteLine();
         }
 
-        //protected override bool ExecuteMove(Move move)
-        //{
-        //    var targetColumn = (move as ConnectFourMove).TargetColumn;
-        //    for (var y = GameBoard.Length - 1; y >= 0; y--)
-        //    {
-        //        if (GameBoard.Squares[targetColumn, y].Occupant == null)
-        //        {
-        //            GameBoard.Squares[targetColumn, y].Occupant =
-        //                new ConnectFourPiece(ActivePlayer, 
-        //                    (ActivePlayer as ConnectFourPlayer).Token, GameBoard.Squares[targetColumn, y]);
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
-
         protected override bool CheckVictory()
         {
             List<(int,int)> directions = new List<(int, int)>
@@ -160,42 +156,29 @@ namespace ConnectFour
             RoundCount++;
         }
 
-        protected override void ContinueFromMove(int moveNumber)
+        public override Board GoToMove(int moveNumber)
         {
-            ConnectFourBoard newBoard = new ConnectFourBoard(7, 6);
+            ConnectFourBoard newBoard = (GameMoveHistory.ReconstructBoard(moveNumber)) as ConnectFourBoard;
+            return newBoard;
 
-            ConnectFourPlayer first = Players[0] as ConnectFourPlayer;
-            ConnectFourPlayer second = Players[1] as ConnectFourPlayer;
+            //Console.WriteLine("[Y] Continue from this position");
+            //Console.WriteLine("[Enter] Cancel and return to the latest position");
+            //string choice = Console.ReadLine();
+            //if (choice.ToUpper() == "Y")
+            //{
+            //    ContinueFromMove(moveNumber, newBoard);
+            //}
+            //GameBoard.Render();
+        }
 
-            foreach (ConnectFourPlayer player in Players)
-            {
-                if (player.Id == 0)
-                {
-                    first = player;
-                } else if (player.Id == 1)
-                {
-                    second = player;
-                }
-                else
-                {
-                    throw new ApplicationException("Players not set correctly. ");
-                }
-            }
-
-            int moveCount = 0;
-            foreach (ConnectFourMove move in GameMoveHistory.MoveList)
-            {
-                moveCount++;
-                if (moveCount % 2 == 1)
-                {
-                    newBoard.ExecuteMove(move, first);
-                }
-                else
-                {
-                    newBoard.ExecuteMove(move, second);
-                }
-            }
-            newBoard.Render();
+        public override void ContinueFromMove(int moveNumber, Board board)
+        {
+            GameBoard = board;
+            // Set ActivePlayer correctly in regard to move order.
+            ActivePlayer = Utils.GetPlayerById(Players, moveNumber % 2 == 0 ? 1 : 2);
+            // Remove all subsequent moves in the list.
+            GameMoveHistory.MoveList = GameMoveHistory.MoveList.GetRange(0, moveNumber);
+            Console.WriteLine($"Reloaded from move #{moveNumber}. ");
         }
 
     }

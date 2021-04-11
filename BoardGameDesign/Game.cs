@@ -30,7 +30,12 @@ namespace BoardGameFramework
             GameBoard.Render();
             while (!Finished)
             {
-                Move move = ActivePlayer.MakeMove(GameBoard);
+                Move move;
+                do
+                {
+                    move = ActivePlayer.MakeMove(GameBoard);
+                } while (move == null);
+                
                 if (GameBoard.ExecuteMove(move, ActivePlayer))
                 {
                     GameMoveHistory.AppendMove(move);
@@ -69,10 +74,10 @@ namespace BoardGameFramework
         protected abstract void InitializeRound();
         protected abstract bool CheckVictory();
         protected abstract bool CheckDraw();
-        // protected abstract bool ExecuteMove(Move move);
         protected abstract void HandleVictory();
         protected abstract void HandleDraw();
         protected abstract void HandleContinue();
-        protected abstract void ContinueFromMove(int moveNumber);
+        public abstract Board GoToMove(int moveNumber);
+        public abstract void ContinueFromMove(int moveNumber, Board board);
     }
 }
