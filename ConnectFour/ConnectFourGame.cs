@@ -160,15 +160,6 @@ namespace ConnectFour
         {
             ConnectFourBoard newBoard = (GameMoveHistory.ReconstructBoard(moveNumber)) as ConnectFourBoard;
             return newBoard;
-
-            //Console.WriteLine("[Y] Continue from this position");
-            //Console.WriteLine("[Enter] Cancel and return to the latest position");
-            //string choice = Console.ReadLine();
-            //if (choice.ToUpper() == "Y")
-            //{
-            //    ContinueFromMove(moveNumber, newBoard);
-            //}
-            //GameBoard.Render();
         }
 
         public override void ContinueFromMove(int moveNumber, Board board)

@@ -29,6 +29,17 @@ namespace BoardGameFramework
             return s;
         }
 
+        public string[] ToArray()
+        {
+            List<string> a = new List<string>();
+            foreach (var move in MoveList)
+            {
+                a.Add(move.Command);
+            }
+
+            return a.ToArray();
+        }
+
         public abstract Board ReconstructBoard(int n); // Re-do all moves up to the nth move, then return new board state.
     }
 }

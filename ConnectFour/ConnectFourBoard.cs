@@ -47,11 +47,11 @@ namespace ConnectFour
 
         public override void Render()
         {
-            Console.WriteLine("     [C1][C2][C3][C4][C5][C6][C7]");
+            Console.WriteLine("     [C0][C1][C2][C3][C4][C5][C6]");
             Console.WriteLine("---------------------------------");
             for (var y = 0; y < Length; y++)
             {
-                Console.Write("[R" + (y + 1) + "]|");
+                Console.Write("[R" + (y) + "]|");
                 for (var x = 0; x < Width; x++) Console.Write(Squares[x, y].Render());
 
                 Console.Write("\n");

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using BoardGameFramework;
+using System;
 using System.Collections.Generic;
-using BoardGameFramework;
 
 namespace ConnectFour
 {
@@ -85,7 +85,53 @@ namespace ConnectFour
                     Console.WriteLine("Help Doc.");
                     return null;
                 } 
+                else if (s.StartsWith("/SAVE"))
+                {
+                    C4TextSaveRepository sr = new C4TextSaveRepository();
+                    string fileName = "";
+                    try
+                    {
+                        fileName = s.Split(" ")[1];
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        fileName = DateTime.Now.ToString("MMddyyyy-HHmmss");
+                    }
+                    sr.Save(fileName);
+                }
+                else if (s.StartsWith("/LOAD"))
+                {
+                    C4TextSaveRepository sr = new C4TextSaveRepository();
+                    try
+                    {
+                        string fileName = s.Split(" ")[1];
+                        MoveHistory loadedHistory = sr.Load(fileName);
+                        if (loadedHistory != null)
+                        {
+                            ConnectFourBoard newBoard =
+                                loadedHistory.ReconstructBoard(loadedHistory.MoveList.Count) as ConnectFourBoard;
+                            newBoard.Render();
+                            Console.WriteLine(
+                                ">> Warning: Loading a position will terminate the current round, unless you have saved it. ");
+                            Console.WriteLine(">> Press [Enter] to continue, or [Esc] to cancel. ");
+                            if (Console.ReadKey().Key == ConsoleKey.Enter)
+                            {
+                                Connect4Game.Instance.GameBoard = newBoard;
+                                Connect4Game.Instance.GameMoveHistory = loadedHistory;
+                                Connect4Game.Instance.ContinueFromMove(loadedHistory.MoveList.Count,
+                                    Connect4Game.Instance
+                                        .GameBoard); // set the new board to live, and continue from the last move
+                                // this will also determine which player should move next
+                            }
+                        }
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        sr.ListTextSaves();
+                    }
+                }
 
+                // Traverse the move list...
                 else if (s.StartsWith("/TRAVERSE"))
                 {
                     if (Connect4Game.Instance.GameMoveHistory == null || Connect4Game.Instance.GameMoveHistory.MoveList.Count == 0)
@@ -108,12 +154,24 @@ namespace ConnectFour
                         string input = Console.ReadLine().ToUpper();
                         if (input.StartsWith("/TAKEBACK") || input.StartsWith("/TB"))
                         {
-                            current--;
+                            if (current > 0)
+                            {
+                                current--;
+                            }else {
+                                Console.WriteLine("No more move to take back.");
+                            }
                             Connect4Game.Instance.GoToMove(current).Render();
                         } 
                         else if (input.StartsWith("/REPLAY") || input.StartsWith("/RP"))
                         {
-                            current++;
+                            if (current < Connect4Game.Instance.GameMoveHistory.MoveList.Count)
+                            {
+                                current++;
+                            }
+                            else
+                            {
+                                Console.WriteLine("No more move to replay.");
+                            }
                             Connect4Game.Instance.GoToMove(current).Render();
                         }
                         else if (input.StartsWith("/SELECT"))

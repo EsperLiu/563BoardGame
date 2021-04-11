@@ -1,4 +1,6 @@
-﻿using BoardGameFramework;
+﻿using System;
+using System.Collections.Generic;
+using BoardGameFramework;
 
 namespace ConnectFour
 {
@@ -22,6 +24,21 @@ namespace ConnectFour
             }
 
             return ConstructedBoard;
+        }
+
+        public void AppendMove(string command)
+        {
+            int colorId = 1;
+            if (MoveList.Count % 2 == 0)
+            {
+                colorId = 1;
+            }
+            else
+            {
+                colorId = 2;
+            }
+            ConnectFourMove move = new ConnectFourMove(command, colorId);
+            MoveList.Add(move);
         }
     }
 }

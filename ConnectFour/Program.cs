@@ -14,9 +14,22 @@ namespace ConnectFour
             Console.WriteLine("*                                            *");
             Console.WriteLine("**********************************************");
             Console.WriteLine();
-            Game game = Connect4Game.Instance;
-            game.Configure();
-            while (true) game.Play();
+            Console.WriteLine(">> Welcome! Remember, you can ask for help at any time with \"/help\" or simply \"/\". ");
+            try
+            {
+                Game game = Connect4Game.Instance;
+                game.Configure();
+                while (true) game.Play();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Console.WriteLine("");
+                Console.WriteLine(">> Oops, something went wrong! It seems you just found a bug...");
+                Console.WriteLine(">> Press [Enter] to restart the game.");
+                Console.ReadLine();
+                Main(args);
+            }
         }
     }
 }
