@@ -1,5 +1,5 @@
-﻿using System;
-using BoardGameFramework;
+﻿using BoardGameFramework;
+using System;
 
 namespace ConnectFour
 {

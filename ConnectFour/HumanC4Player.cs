@@ -1,5 +1,5 @@
-﻿using System;
-using BoardGameFramework;
+﻿using BoardGameFramework;
+using System;
 
 namespace ConnectFour
 {
@@ -28,9 +28,10 @@ namespace ConnectFour
                 {
                     return null;
                 }
-                Console.WriteLine($"{this} to make a move. ");
+                Console.WriteLine($">> {this} to make a move. ");
                 input = Utils.TakeStringInput(true);
-                if (int.TryParse(input, out int targetColumn)) {
+                if (int.TryParse(input, out int targetColumn))
+                {
                     foreach (int i in oc)
                     {
                         if (i == targetColumn)

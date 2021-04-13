@@ -1,7 +1,6 @@
-﻿using System;
+﻿using BoardGameFramework;
+using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using BoardGameFramework;
 
 namespace ConnectFour
 {
@@ -47,17 +46,17 @@ namespace ConnectFour
 
         public override void Render()
         {
-            Console.WriteLine("     [C0][C1][C2][C3][C4][C5][C6]");
-            Console.WriteLine("---------------------------------");
+            Console.WriteLine("          [C0][C1][C2][C3][C4][C5][C6]");
+            Console.WriteLine("     ---------------------------------");
             for (var y = 0; y < Length; y++)
             {
-                Console.Write("[R" + (y) + "]|");
+                Console.Write("     [R" + (y) + "]|");
                 for (var x = 0; x < Width; x++) Console.Write(Squares[x, y].Render());
 
                 Console.Write("\n");
             }
-            Console.WriteLine("---------------------------------");
-            
+            Console.WriteLine("     ---------------------------------");
+
         }
 
         public int[,] MatrixFormat()

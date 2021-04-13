@@ -35,7 +35,7 @@ namespace BoardGameFramework
                 {
                     move = ActivePlayer.MakeMove(GameBoard);
                 } while (move == null);
-                
+
                 if (GameBoard.ExecuteMove(move, ActivePlayer))
                 {
                     GameMoveHistory.AppendMove(move);

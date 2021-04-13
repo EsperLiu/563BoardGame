@@ -1,12 +1,12 @@
-﻿using System;
+﻿using BoardGameFramework;
+using System;
 using System.Collections.Generic;
-using BoardGameFramework;
 
 namespace ConnectFour
 {
-    public class C4GreedyStrategy : ComputerStrategy
+    public class C4GreedyStrategy : IComputerStrategy
     {
-        public override Move GenerateMove(Board board, Player player)
+        public Move GenerateMove(Board board, Player player)
         {
             Random rand = new Random();
 
@@ -22,11 +22,13 @@ namespace ConnectFour
                 {
                     selectedMove = possibleMove.ToString();
                     break;
-                } else if (result > bestCount)
+                }
+                else if (result > bestCount)
                 {
                     bestCount = result;
                     selectedMove = possibleMove.ToString();
-                } else if (result == bestCount)
+                }
+                else if (result == bestCount)
                 {
                     if (rand.NextDouble() < 0.1)
                     {
@@ -62,7 +64,7 @@ namespace ConnectFour
                 {
                     return n; // Found a winning move, return immediately.
                 }
-                if ( n > singlePieceBest)
+                if (n > singlePieceBest)
                 {
                     singlePieceBest = n;
                 }

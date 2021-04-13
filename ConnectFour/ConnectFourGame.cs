@@ -1,6 +1,6 @@
-﻿using System;
+﻿using BoardGameFramework;
+using System;
 using System.Collections.Generic;
-using BoardGameFramework;
 
 namespace ConnectFour
 {
@@ -31,10 +31,10 @@ namespace ConnectFour
         public override void Configure()
         {
             // Create the first player
-            string playerName = null; 
+            string playerName = null;
             while (playerName == null)
             {
-                Console.WriteLine("Please enter a name for player 1: ");
+                Console.WriteLine(">> Please enter a name for player 1: ");
                 playerName = Utils.TakeStringInput(true);
             }
             Players.Add(new HumanC4Player(playerName));
@@ -43,7 +43,7 @@ namespace ConnectFour
             string mode;
             do
             {
-                Console.WriteLine("Please select a game mode: ");
+                Console.WriteLine(">> Please select a game mode: ");
                 Console.WriteLine("[1] Player vs. Computer");
                 Console.WriteLine("[2] Player vs. Player");
                 mode = Console.ReadLine();
@@ -54,7 +54,7 @@ namespace ConnectFour
                 string aiSelect;
                 do
                 {
-                    Console.WriteLine("Please select an AI to play against: ");
+                    Console.WriteLine(">> Please select an AI to play against: ");
                     Console.WriteLine("[1] Simple random algorithm");
                     Console.WriteLine("[2] Simple greedy algorithm");
                     aiSelect = Console.ReadLine();
@@ -64,7 +64,8 @@ namespace ConnectFour
                 if (aiSelect == "1")
                 {
                     opponent.Strategy = new C4RandomStrategy();
-                } else if (aiSelect == "2")
+                }
+                else if (aiSelect == "2")
                 {
                     opponent.Strategy = new C4GreedyStrategy();
                 }
@@ -73,7 +74,7 @@ namespace ConnectFour
 
             else if (mode == "2") // PvP mode selected
             {
-                Console.WriteLine("Please enter a name for player 2: ");
+                Console.WriteLine(">> Please enter a name for player 2: ");
                 playerName = Console.ReadLine();
                 Players.Add(new HumanC4Player(playerName));
             }
@@ -81,7 +82,7 @@ namespace ConnectFour
             string firstPlayerChoice;
             do
             {
-                Console.WriteLine("Who should take yellow pieces and play first?");
+                Console.WriteLine(">> Who should take yellow pieces and play first?");
                 Console.WriteLine($"[1] {Players[0].Name}");
                 Console.WriteLine($"[2] {Players[1].Name}");
                 firstPlayerChoice = Console.ReadLine();
@@ -95,7 +96,7 @@ namespace ConnectFour
             {
                 ActivePlayer = Players[1];
             }
-            (ActivePlayer as ConnectFourPlayer).Color = "Yellow" ;
+            (ActivePlayer as ConnectFourPlayer).Color = "Yellow";
             (NextPlayer() as ConnectFourPlayer).Color = "Red";
 
             GameScoreboard = new Scoreboard(Players[0], Players[1]);
@@ -105,15 +106,15 @@ namespace ConnectFour
 
         protected override bool CheckVictory()
         {
-            List<(int,int)> directions = new List<(int, int)>
+            List<(int, int)> directions = new List<(int, int)>
             {
                 (1,0), (0,1), (1,1), (-1,1)
             };
 
-            foreach ((int,int) direction in directions)
+            foreach ((int, int) direction in directions)
             {
                 if (Utils.FindConnected(
-                    (GameBoard as ConnectFourBoard).MatrixFormat(), 
+                    (GameBoard as ConnectFourBoard).MatrixFormat(),
                     ActivePlayer.Id, direction.Item1, direction.Item2) == 4)
                 {
                     return true;
@@ -136,7 +137,7 @@ namespace ConnectFour
 
         protected override void HandleDraw()
         {
-            Console.WriteLine("The round ends in a draw!");
+            Console.WriteLine(">> The round ends in a draw!");
             GameScoreboard.ModifyScore(ActivePlayer, 1);
             GameScoreboard.ModifyScore(NextPlayer(), 1);
         }
@@ -144,12 +145,11 @@ namespace ConnectFour
         protected override void HandleContinue()
         {
             GameScoreboard.DisplayScores();
-            Console.WriteLine("Press any key to continue, or [Esc] to quit.");
+            Console.WriteLine(">> Press any key to continue, or [Esc] to quit.");
             var input = Console.ReadKey().Key;
             Console.WriteLine();
             if (input == ConsoleKey.Escape)
             {
-                Console.WriteLine("Thanks for playing! ");
                 Environment.Exit(0);
             }
 
@@ -169,7 +169,7 @@ namespace ConnectFour
             ActivePlayer = Utils.GetPlayerById(Players, moveNumber % 2 == 0 ? 1 : 2);
             // Remove all subsequent moves in the list.
             GameMoveHistory.MoveList = GameMoveHistory.MoveList.GetRange(0, moveNumber);
-            Console.WriteLine($"Reloaded from move #{moveNumber}. ");
+            Console.WriteLine($">> Reloaded from move #{moveNumber}. ");
         }
 
     }

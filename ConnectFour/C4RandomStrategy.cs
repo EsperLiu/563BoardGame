@@ -1,15 +1,15 @@
-﻿using System;
-using BoardGameFramework;
+﻿using BoardGameFramework;
+using System;
 
 namespace ConnectFour
 {
-    public class C4RandomStrategy : ComputerStrategy
+    public class C4RandomStrategy : IComputerStrategy
     {
         public C4RandomStrategy()
         {
         }
 
-        public override Move GenerateMove(Board board, Player player)
+        public Move GenerateMove(Board board, Player player)
         {
             {
                 var possibleColumns = (board as ConnectFourBoard).OpenColumns.ToArray();

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BoardGameFramework
+﻿namespace BoardGameFramework
 {
     public abstract class Board
     {
@@ -11,8 +9,8 @@ namespace BoardGameFramework
             Squares = new Square[Width, Length];
 
             for (var x = 0; x < Width; x++)
-            for (var y = 0; y < Length; y++)
-                Squares[x, y] = new Square(x, y);
+                for (var y = 0; y < Length; y++)
+                    Squares[x, y] = new Square(x, y);
         }
 
         public int Length { get; set; }

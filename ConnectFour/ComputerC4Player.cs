@@ -1,5 +1,5 @@
-﻿using System;
-using BoardGameFramework;
+﻿using BoardGameFramework;
+using System;
 
 namespace ConnectFour
 {
@@ -14,12 +14,12 @@ namespace ConnectFour
             Strategy = strategy;
         }
 
-        public ComputerStrategy Strategy { get; set; }
+        public IComputerStrategy Strategy { get; set; }
 
         public override Move MakeMove(Board board)
         {
             ConnectFourMove move = Strategy.GenerateMove(board, this) as ConnectFourMove;
-            Console.WriteLine($"{Name} made a move: [Column {move.TargetColumn}] ");
+            Console.WriteLine($">> {Name} made a move: [Column {move.TargetColumn}] ");
             return move;
         }
     }

@@ -1,9 +1,7 @@
 ﻿namespace BoardGameFramework
 {
-    public abstract class ComputerStrategy
+    public interface IComputerStrategy
     {
-        protected string Name { get; set; }
-
-        public abstract Move GenerateMove(Board board, Player player);
+        Move GenerateMove(Board board, Player player);
     }
 }

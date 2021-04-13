@@ -1,7 +1,7 @@
-﻿using System;
+﻿using BoardGameFramework;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using BoardGameFramework;
 
 namespace ConnectFour
 {
@@ -19,14 +19,14 @@ namespace ConnectFour
             }
 
             var d = new DirectoryInfo(FilePath);
-            var Files = d.GetFiles("*.txt"); 
+            var Files = d.GetFiles("*.c4save");
 
             ConnectFourMoveHistory moveHistory = new ConnectFourMoveHistory();
 
             bool found = false;
             foreach (var file in Files)
             {
-                if (file.Name.ToUpper() == fileName.ToUpper())
+                if (file.Name.ToUpper() == fileName.ToUpper() || (file.Name).ToUpper() == (fileName+".c4save").ToUpper())
                 {
                     found = true;
                     using StreamReader sr = new StreamReader(file.Name);
@@ -55,31 +55,29 @@ namespace ConnectFour
             }
 
             string[] lines = Connect4Game.Instance.GameMoveHistory.ToArray();
-            string fullPath = Path.Combine(FilePath, $"C4SAVE_{fileName}.txt");
+            string fullPath = Path.Combine(FilePath, $"{fileName}.c4save");
             using (var outputFile = new StreamWriter(fullPath))
             {
-                foreach (var line in lines){
-                    outputFile.WriteLine(line);}
+                foreach (var line in lines)
+                {
+                    outputFile.WriteLine(line);
+                }
             }
 
             Console.WriteLine($"Position saved to {fullPath}");
             return true;
         }
 
-        public void ListTextSaves()
+        public string[] FetchSaves()
         {
-            Console.WriteLine(">> Found the following save files: ");
-            Console.WriteLine(">> Use \"/load filename\" to load a saved position. ");
             var d = new DirectoryInfo(FilePath);
-            var Files = d.GetFiles("*.txt");
-            var str = "";
+            var Files = d.GetFiles("*.c4save");
+            var saves = new List<string>();
             foreach (var file in Files)
             {
-                if (file.Name.StartsWith("C4SAVE_"))
-                {
-                    Console.WriteLine(file.Name);
-                }
+                saves.Add(file.Name);
             }
+            return saves.ToArray();
         }
     }
 }

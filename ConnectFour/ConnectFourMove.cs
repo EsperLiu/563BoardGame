@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices.ComTypes;
-using BoardGameFramework;
+﻿using BoardGameFramework;
 
 namespace ConnectFour
 {
